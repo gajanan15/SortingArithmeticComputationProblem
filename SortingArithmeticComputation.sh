@@ -1,27 +1,29 @@
 #!/bin/bash -x
+declare -A resultComputation
 
 read -p "Enter Value Of A: " a
 read -p "Enter Value Of B: " b
 read -p "Enter Value Of C: " c
 
-declare -A ResultDictionary
 count=0
+
 result1=`echo "$a+$b*$c" | bc`
 result2=`echo "$a*$b+$c" | bc`
 result3=`echo "scale=2; $c+$a/$b" | bc`
 result4=`echo "$a%$b+$c" | bc`
 
-ResultDictionary[result1]=$result1
-ResultDictionary[result2]=$result2
-ResultDictionary[result3]=$result3
-ResultDictionary[result4]=$result4
+resultComputation[result1]=$result1
+resultComputation[result2]=$result2
+resultComputation[result3]=$result3
+resultComputation[result4]=$result4
 
-while [[ $count -ne ${#ResultDictionary[@]} ]]
+while [[ $count -ne ${#resultComputation[@]} ]]
 do
-	array[$count]=${ResultDictionary[result"$(( count+1 ))"]}
+	array[$count]=${resultComputation[result"$(( count+1 ))"]}
 	count=$(( count+1 ))
 done
 echo ${array[@]}
+
 for((i=0;i<3;i++))
 do
 	for((j=i+1;j<4;j++))
@@ -34,7 +36,6 @@ do
 		fi
 	done
 done
-
 echo Descending order : ${array[@]}
 
 for((i=0;i<3;i++))
@@ -49,5 +50,4 @@ do
 		fi
 	done
 done
-
 echo Ascending order : ${array[@]}
